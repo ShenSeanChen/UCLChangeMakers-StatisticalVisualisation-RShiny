@@ -139,8 +139,8 @@ Server <- shinyServer(function(input, output, session) {
   ###############################################################################
   # MLE
   output$plot_MLE <- renderPlot(
-    if(input$type_MLE == "bern"){
-      x <- rbinom(as.numeric(input$s),1,as.numeric(input$p))
+    if(input$MLE_type == "bern"){
+      x <- rbinom(as.numeric(input$MLE_s),1,as.numeric(input$MLE_p))
       m <- seq(from=0,to=1,length.out = 10000)
       likelihood <- 1
       for(i in 1:length(x)){
@@ -154,8 +154,8 @@ Server <- shinyServer(function(input, output, session) {
       plot(x = m, y = likelihood,type = "l",xlab="p",ylim = range(likelihood))
       points(x = m[likelihood==max(likelihood)],y = max(likelihood),col="red",pch = 19)
     }
-    else if(input$type_MLE == "geom"){
-      x <- rgeom(as.numeric(input$s),as.numeric(input$p3))
+    else if(input$MLE_type == "geom"){
+      x <- rgeom(as.numeric(input$MLE_s),as.numeric(input$MLE_p3))
       m <- seq(from=0,to=1,length.out = 10000)
       likelihood <- 1
       for(i in 1:length(x)){
@@ -164,8 +164,8 @@ Server <- shinyServer(function(input, output, session) {
       plot(x=m,y= likelihood,type = "l",xlab = "p",ylim = range(likelihood))
       points(x = m[likelihood==max(likelihood)],y= max(likelihood),col="red",pch = 19)
     }
-    else if(input$type_MLE == "pois"){
-      x <- rpois(as.numeric(input$s),as.numeric(input$lambda2))
+    else if(input$MLE_type == "pois"){
+      x <- rpois(as.numeric(input$MLE_s),as.numeric(input$MLE_lambda2))
       m <- seq(from=0,to=100,length.out = 10000)
       likelihood <- 1
       for(i in 1:length(x)){
@@ -174,8 +174,8 @@ Server <- shinyServer(function(input, output, session) {
       plot(x=m,y= likelihood,type = "l",xlab = "mu",ylim = range(likelihood))
       points(x = m[likelihood==max(likelihood)],y= max(likelihood),col="red",pch = 19)
     }
-    else if(input$type_MLE == "exp"){
-      x <- rexp(as.numeric(input$s),as.numeric(input$lambda))
+    else if(input$MLE_type == "exp"){
+      x <- rexp(as.numeric(input$MLE_s),as.numeric(input$MLE_lambda))
       m <- seq(from=0,to=100,length.out = 10000)
       likelihood <- 1
       for(i in 1:length(x)){
@@ -184,8 +184,8 @@ Server <- shinyServer(function(input, output, session) {
       plot(x=m,y= likelihood,type = "l",xlab = "mu",ylim = range(likelihood))
       points(x = m[likelihood==max(likelihood)],y= max(likelihood),col="red",pch = 19)
     }
-    else if(input$type_MLE == "norm"){
-      x <- rnorm(as.numeric(input$s),as.numeric(input$miu),as.numeric(input$sigma))
+    else if(input$MLE_type == "norm"){
+      x <- rnorm(as.numeric(input$MLE_s),as.numeric(input$MLE_miu),as.numeric(input$MLE_sigma))
       m <- seq(from=as.numeric(input$miu)-20,to=as.numeric(input$miu)+20,length.out = 100)
       n <- seq(from=1,to=as.numeric(input$sigma)+10,length.out = 100)
       likelihood <- matrix(1,nrow = 100,ncol = 100)
@@ -196,7 +196,7 @@ Server <- shinyServer(function(input, output, session) {
           }
         }
       }
-      persp3D(m,n,likelihood, nticks=5, ticktype="detailed",xlab="mean",ylab="standard deviation",zlab="likelihood")
+      persp3D(m,n,likelihood, nticks=5, ticktype="detailed",xlab="mu",ylab="sd",zlab="likelihood" )
       
     }
   )

@@ -46,7 +46,10 @@ sidebar<-dashboardSidebar(
     menuItem(text = 'Probability and Statistics', icon = icon("bar-chart-o"),
              menuSubItem(text = 'Central Limit Theorem', tabName = 'CLT'),
              menuSubItem(text = 'Quantile Plots and Skewness', tabName = 'QQ'),
-             menuSubItem(text = 'Maximum Likelihood Estimation', tabName = 'MLE')
+             menuItem(text = 'Maximum Likelihood Estimation',icon = icon("chart-line"),
+                      menuSubItem(text='Concepts',tabName='MLE_concept',icon=icon('lightbulb')),
+                      menuSubItem(text = 'Plot and calculation',tabName = 'MLE',icon = icon('dashboard'))
+             )
              ),
     
     menuItem(text = 'Normal Linear Regression', icon = icon("chart-line"),
@@ -221,55 +224,70 @@ tabItem(tabName = "QQ",
             box(plotOutput("QQplots")))
         )),  
 
+tabItem(tabName = 'MLE_concept',solidHeader = TRUE,
+        h2("Maximum Likelihood Estimation"),
+        fluidRow(
+          box(title='Definition',width=8,"In statistics, maximum likelihood estimation (MLE) is a method of estimating the parameters of 
+              a statistical model,given observations.The method obtains the parameter estimates by finding the parameter
+              values that maximize the likelihood function.The estimates are called maximum likelihood estimates, 
+              which is also abbreviated as MLE."),
+          box(title='Step1',width=12,solidHeader = TRUE,
+              status='primary',fluidRow(column(width=12,tags$img(src='formula1.png', 
+                                                                 height='100px',width='300px')))),
+          box(title="Step2",width=12,solidHeader = TRUE,
+              status = 'primary',fluidRow(column(width=12,tags$img(src='formula2.png',
+                                                                   height='100px',width='300px')))),
+          box(title="Step3",width=12,solidHeader = TRUE,
+              status = 'primary',fluidRow(column(width=12,tags$img(src='formula3.png',
+                                                                   height='100px',width='300px')))),
+          box(title="Step4",width=12,solidHeader = TRUE,
+              status = 'primary',fluidRow(column(width=12,tags$img(src='formula4.png',
+                                                                   height='100px',width='300px'))))
+          
+          )),
 ###############################################################################
-# Maximum Likelihood Estimation
+# Maximum likelihood estimation-plot
 ###############################################################################
 tabItem(tabName = 'MLE',
-        fluidRow(box(width = 4,
+        fluidRow(box(width = 8,
                      #Choose number of observations
-                     sliderInput("s",
+                     sliderInput("MLE_s",
                                  label = "Number of Observations",
                                  value = 3,min = 1,max = 250),
                      
                      #Distribution
-                     selectInput("type_MLE", label = "Distribution",
+                     selectInput("MLE_type", label = "Distribution",
                                  choices = c("Normal" = "norm","Bernoulli" = "bern", "Exponential"="exp","Poission"="pois", 
                                              "Geometric"="geom"), 
                                  selected = "bern"),
                      conditionalPanel(
-                       condition = "input.type == 'norm'",
-                       textInput("miu", label = "Mean", value = 0),
-                       textInput("sigma", label = "Standard Deviation", value = 1)
+                       condition = "input.MLE_type == 'norm'",
+                       textInput("MLE_miu", label = "Mean", value = 0),
+                       textInput("MLE_sigma", label = "Standard Deviation", value = 10)
                      ),
                      conditionalPanel(
-                       condition = "input.type == 'exp'",
-                       textInput("lambda", "Rate", value = 10)
+                       condition = "input.MLE_type == 'exp'",
+                       textInput("MLE_lambda", "Rate", value = 10)
                      ),
                      conditionalPanel(
-                       condition = "input.type == 'bern'",
-                       textInput("p", "Probability", value = 0.5)
+                       condition = "input.MLE_type == 'bern'",
+                       textInput("MLE_p", "Probability", value = 0.5)
                      ),
                      conditionalPanel(
-                       condition = "input.type == 'pois'",
-                       textInput("lambda2", "Rate", value = 20)
+                       condition = "input.MLE_type == 'pois'",
+                       textInput("MLE_lambda2", "Rate", value = 20)
                      ),
                      conditionalPanel(
-                       condition = "input.type == 'geom'",
-                       textInput("p3", "Probability", value=0.5)
-                     ),
-                     conditionalPanel(
-                       condition = "input.type == 'unif'",
-                       textInput("a", "Minimum value", value = 0),
-                       textInput("b", "Maximum value", value = 1)
+                       condition = "input.MLE_type == 'geom'",
+                       textInput("MLE_p3", "Probability", value=0.5)
                      )
         ),
         
-        box(width = 8, tabsetPanel(type="tabs",
-                                   tabPanel(
-                                     "Plot",
-                                     plotOutput("plot_MLE")
-                                   ),
-                                   tabPanel("Definition")
+        box(width = 12, tabsetPanel(type="tabs",
+                                    tabPanel(
+                                      "Plot",
+                                      plotOutput("plot_MLE")
+                                    )
         ))
         
         )
